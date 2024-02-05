@@ -6,8 +6,8 @@ class Point:
         """
         点
         :param name: 名字
-        :param x: 横坐标
-        :param y: 纵坐标
+        :param x: 横坐标，None代表未知数
+        :param y: 纵坐标，None代表未知数
         """
         self.name = name
         if x is None:
@@ -24,6 +24,9 @@ class Point:
         """
         return self.x, self.y
 
+    def __str__(self):
+        return f'{self.name}{self.coordinate()}'
+
 
 class Line:
     def __init__(self, p1: Point, p2: Point):
@@ -34,13 +37,50 @@ class Line:
         """
         self.p1 = p1
         self.p2 = p2
+        self.k = self._k()
+        self.b = self._b()
 
-    def k(self):
-        """
-        获取所在直线的一次函数的斜率(k)
-        :return: 斜率
-        """
+    def _k(self):
+        """斜率"""
         return (self.p1.y - self.p2.y) / (self.p1.x - self.p2.x)
+
+    def _b(self):
+        """截距"""
+        # y = kx + b
+        # b = y - kx
+        return self.p1.y - self.k * self.p1.x
+
+
+class Intersection(Point):
+    def __init__(self, name: str, l1: Line, l2: Line):
+        """
+        两条线的交点
+        :param name: 名字
+        :param l1: 一条线
+        :param l2: 另一条线
+        """
+        # { y = k1x + b1
+        # { y = k2x + b2
+        # k1x + b1 = k2x + b2
+        # (k1 - k2)x = b2 - b1
+        # x = (b2 - b1)/(k1 - k2)
+        x = (l2.b - l1.b) / (l1.k - l2.k)
+        y = l1.k * x + l1.b
+        super().__init__(name, x, y)
+
+
+class PointOnLine(Point):
+    def __init__(self, name: str, x, l: Line):
+        """
+        线上的点
+        :param name: 名字
+        :param x: 横坐标，None代表未知数
+        :param l: 点所在的线
+        """
+        if x is None:
+            x = sympy.Symbol(f'x{name}')
+        y = l.k * x + l.b
+        super().__init__(name, x, y)
 
 
 def distance(p1: Point, p2: Point):
@@ -84,4 +124,7 @@ class Angle:
 
 
 if __name__ == '__main__':
-    pass
+    a = Point('A', 4, 0)
+    b = Point('B', 0, 3)
+    o = Point('O', 0, 0)
+    print(Angle(a, o, b).val)
