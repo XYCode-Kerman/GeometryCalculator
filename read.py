@@ -1,5 +1,6 @@
 import re
-import sympy
+
+from sympy import rad, pi, Integer, sqrt, sin, cos, tan
 
 from classes import *
 
@@ -27,14 +28,28 @@ def to_expr(s, points: dict):
     pattern = r'\b([A-Z])([A-Z])\b'
     repl = r"distance(points['\1'], points['\2'])"
     s = re.sub(pattern, repl, s)
+    # 三角函数
+    pattern = r'\b(sin|cos|tan)(∠[A-Z]{3})'
+    repl = r'\1(\2)'
+    s = re.sub(pattern, repl, s)
     # 处理角
     pattern = r'∠([A-Z])([A-Z])([A-Z])\b'
     repl = r"Angle(points['\1'], points['\2'], points['\3']).val"
     s = re.sub(pattern, repl, s)
     # 角度制转弧度制
     pattern = r'\b(\d+)°'
-    repl = r'sympy.rad(\1)'
+    repl = r'rad(\1)'
     s = re.sub(pattern, repl, s)
     # π转pi
-    s = s.replace('π', 'sympy.pi')
+    s = s.replace('π', 'pi')
+    # 处理整数与分数
+    pattern = r'\b(\d+)\b'
+    repl = r'Integer(\1)'
+    s = re.sub(pattern, repl, s)
     return eval(s)
+
+
+if __name__ == '__main__':
+    print(to_expr('1/3', {}))
+    print(to_expr('tan∠AOB', {'A': Point('A', 5, 5), 'O': Point('O', 0, 0), 'B': Point('B', 5, 0)}))
+    print(to_expr('sqrt(2)', {}))

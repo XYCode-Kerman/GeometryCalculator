@@ -1,8 +1,7 @@
 import sys
 
-from PyQt6.QtCore import QLocale
 from PyQt6.QtWidgets import QApplication
-from qfluentwidgets import FluentWindow, FluentTranslator, FluentIcon
+from qfluentwidgets import FluentWindow, FluentTranslator, FluentIcon, NavigationItemPosition
 
 import interfaces
 
@@ -27,11 +26,14 @@ class Window(FluentWindow):
         self.addSubInterface(self.ui_add, FluentIcon.ADD, '添加点和条件')
         self.ui_solve = interfaces.InterfaceSolve(self)
         self.addSubInterface(self.ui_solve, FluentIcon.EDIT, '求解')
+        self.ui_help = interfaces.InterfaceHelp(self)
+        self.addSubInterface(self.ui_help, FluentIcon.HELP, '帮助与关于', NavigationItemPosition.BOTTOM)
 
 
 app = QApplication(sys.argv)
 # 国际化
-translator = FluentTranslator(QLocale(QLocale.Language.Chinese, QLocale.Country.China))
+# 为啥translator不生效啊，我不理解啊啊啊啊啊
+translator = FluentTranslator()
 app.installTranslator(translator)
 w = Window()
 w.show()
