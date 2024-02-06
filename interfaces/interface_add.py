@@ -76,11 +76,11 @@ class InterfaceAdd(QWidget, Ui_Add):
             # 读取输入的内容
             name = w.wid.LineEdit_name.text()
             try:
-                x = eval(w.wid.LineEdit_x.text())
+                x = read.to_expr(w.wid.LineEdit_x.text(), self.w.points)
             except:
                 x = None
             try:
-                y = eval(w.wid.LineEdit_y.text())
+                y = read.to_expr(w.wid.LineEdit_y.text(), self.w.points)
             except:
                 y = None
             # 创建点并添加
@@ -107,7 +107,7 @@ class InterfaceAdd(QWidget, Ui_Add):
             name = w.wid.LineEdit_name.text()
             l = read.to_line_object(w.wid.LineEdit_l.text(), self.w.points)
             try:
-                x = eval(w.wid.LineEdit_x.text())
+                x = read.to_expr(w.wid.LineEdit_x.text())
             except:
                 x = None
             # 创建点并添加
@@ -166,13 +166,13 @@ def get_widget(Ui):
 
 def is_number(s: str) -> bool:
     """
-    检查字符串是否是合法的数字，包括小数和负数
+    检查字符串是否是合法的数字，包括小数、负数、分数
     :param s: 字符串
     :return: 是数字则为True，不是为False
     """
     try:
-        float(s)
-    except ValueError:
+        eval(s)
+    except:
         return False
     else:
         return True

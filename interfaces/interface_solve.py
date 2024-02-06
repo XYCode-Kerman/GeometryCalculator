@@ -20,6 +20,9 @@ class InterfaceSolve(QWidget, Ui_Solve):
 
         self.w: "main.Window" = parent
 
+        # 初始关闭进度条
+        self.IndeterminateProgressBar.stop()
+
         # 求解的子线程
         self.thread_solve = ThreadSolve(self.w)
         # 计时器子线程
@@ -37,12 +40,14 @@ class InterfaceSolve(QWidget, Ui_Solve):
         self.thread_solve.started.connect(lambda: self.set_enabled(False))  # 禁用组件
         self.thread_solve.started.connect(self.thread_timer.start)  # 计时器，启动！（划掉）打开计时器
         self.thread_solve.started.connect(lambda: self.SubtitleLabel_state.setText('计算中，请耐心等待...'))  # 显示状态
+        self.thread_solve.started.connect(self.IndeterminateProgressBar.start)  # 开启进度条
         # 完成后
         self.thread_solve.finished.connect(lambda: self.set_enabled(True))  # 启用组件
         self.thread_solve.finished.connect(
             lambda: self.LargeTitleLabel_result.setText(str(self.thread_solve.result)))  # 显示结果
         self.thread_solve.finished.connect(self.thread_timer.turn_off)  # 关闭计时器
         self.thread_solve.finished.connect(lambda: self.SubtitleLabel_state.setText('所有可能的结果如下'))  # 显示状态
+        self.thread_solve.finished.connect(self.IndeterminateProgressBar.stop)  # 停止进度条
 
     def set_enabled(self, enabled: bool):
         """设置所有互动组件的可用/禁用"""
@@ -104,8 +109,9 @@ class ThreadTimer(QThread):
             h = str(int(t // 3600)).zfill(2)
             m = str(int(t % 3600 // 60)).zfill(2)
             s = str(int(t % 60)).zfill(2)
-            self.sig_set_text.emit(f'用时 {h}:{m}:{s}')
-            time.sleep(0.1)
+            f = str(int(t % 1 * 100)).zfill(2)  # float
+            self.sig_set_text.emit(f'用时 {h}:{m}:{s}.{f}')
+            time.sleep(0.01)
 
     def turn_off(self):
         self.running = False
