@@ -1,4 +1,4 @@
-name: 打包几何计算器-win
+name: 打包几何计算器-linux
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -31,5 +31,5 @@ jobs:
       - name: 上传编译好的文件
         uses: actions/upload-artifact@v2
         with:
-          name: GeometryCalculator-v${{ github.event.inputs.version }}-win
+          name: GeometryCalculator-v${{ github.event.inputs.version }}-linux
           path: out/main.dist/

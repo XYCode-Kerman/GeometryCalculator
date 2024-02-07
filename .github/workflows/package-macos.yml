@@ -1,4 +1,4 @@
-name: 打包几何计算器-win
+name: 打包几何计算器-macos
 
 on:
   workflow_dispatch:
@@ -31,5 +31,5 @@ jobs:
       - name: 上传编译好的文件
         uses: actions/upload-artifact@v2
         with:
-          name: GeometryCalculator-v${{ github.event.inputs.version }}-win
+          name: GeometryCalculator-v${{ github.event.inputs.version }}-macos
           path: out/main.dist/
