@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from qfluentwidgets import MessageBoxBase
-import sympy
+from sympy import sqrt
 
 from .ui_add import Ui_Add
 from .msgbox_point import Ui_MsgBoxPoint
@@ -107,7 +107,7 @@ class InterfaceAdd(QWidget, Ui_Add):
             name = w.wid.LineEdit_name.text()
             l = read.to_line_object(w.wid.LineEdit_l.text(), self.w.points)
             try:
-                x = read.to_expr(w.wid.LineEdit_x.text())
+                x = read.to_expr(w.wid.LineEdit_x.text(), self.w.points)
             except:
                 x = None
             # 创建点并添加
