@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget
 from qfluentwidgets import MessageBoxBase
-from sympy import sqrt
+from sympy import sqrt, Eq
 
 from .ui_add import Ui_Add
 from .msgbox_point import Ui_MsgBoxPoint
@@ -57,16 +57,19 @@ class InterfaceAdd(QWidget, Ui_Add):
         if isinstance(point.y, sympy.Symbol):
             self.w.symbols.add(point.y)
 
-    def add_condition(self, expr):
+    def add_condition_and_show(self, eq: Eq, text: str):
         """
         添加条件并显示
-        :param expr: 条件的表达式，值为0
+        :param eq: 条件的方程
+        :param text: 条件的文本
         :return:
         """
         # 预化简
         if self.CheckBox_pre_simplify.isChecked():
-            expr = sympy.simplify(expr)
-        self.w.conditions.append(expr)
+            eq = sympy.simplify(eq)
+        self.w.conditions.append(eq)
+        self.ListWidget_conditions.addItem(f'{text} => {eq.lhs} = {eq.rhs}')
+        print(sympy.latex(eq))
 
     def add_point(self):
         """添加点"""
@@ -121,9 +124,8 @@ class InterfaceAdd(QWidget, Ui_Add):
             l1 = read.to_line_object(w.wid.LineEdit_1.text(), self.w.points)
             l2 = read.to_line_object(w.wid.LineEdit_2.text(), self.w.points)
             # 平行斜率相等
-            expr = l1.k - l2.k
-            self.add_condition(expr)
-            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} // {w.wid.LineEdit_2.text()}')
+            eq = Eq(l1.k, l2.k)
+            self.add_condition_and_show(eq, f'{w.wid.LineEdit_1.text()}//{w.wid.LineEdit_2.text()}')
 
     def add_vertical(self):
         """垂直"""
@@ -133,9 +135,8 @@ class InterfaceAdd(QWidget, Ui_Add):
             l1 = read.to_line_object(w.wid.LineEdit_1.text(), self.w.points)
             l2 = read.to_line_object(w.wid.LineEdit_2.text(), self.w.points)
             # 垂直则斜率积为-1
-            expr = l1.k * l2.k + 1
-            self.add_condition(expr)
-            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} ⊥ {w.wid.LineEdit_2.text()}')
+            eq = Eq(l1.k * l2.k, -1)
+            self.add_condition_and_show(eq, f'{w.wid.LineEdit_1.text()}⊥{w.wid.LineEdit_2.text()}')
 
     def add_eq(self):
         """等式"""
@@ -145,14 +146,13 @@ class InterfaceAdd(QWidget, Ui_Add):
             left = read.to_expr(w.wid.LineEdit_1.text(), self.w.points)
             right = read.to_expr(w.wid.LineEdit_2.text(), self.w.points)
             # 两边相等
-            expr = left - right
-            self.add_condition(expr)
-            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} = {w.wid.LineEdit_2.text()}')
+            eq = Eq(left, right)
+            self.add_condition_and_show(eq, f'{w.wid.LineEdit_1.text()}={w.wid.LineEdit_2.text()}')
 
 
 def get_widget(Ui):
     """
-    将ui类转换为widget供消息框使用
+    将ui类转换为widget对象供消息框使用
     :param Ui: ui类
     :return: 一个widget
     """
@@ -168,7 +168,7 @@ def get_widget(Ui):
 
 def is_number(s: str) -> bool:
     """
-    检查字符串是否是合法的数字，包括小数、负数、分数
+    检查字符串是否是合法的数字，包括小数、负数、分数、无理数
     :param s: 字符串
     :return: 是数字则为True，不是为False
     """
