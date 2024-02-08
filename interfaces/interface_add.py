@@ -57,7 +57,7 @@ class InterfaceAdd(QWidget, Ui_Add):
         if isinstance(point.y, sympy.Symbol):
             self.w.symbols.add(point.y)
 
-    def add_condition_and_show(self, expr):
+    def add_condition(self, expr):
         """
         添加条件并显示
         :param expr: 条件的表达式，值为0
@@ -67,7 +67,6 @@ class InterfaceAdd(QWidget, Ui_Add):
         if self.CheckBox_pre_simplify.isChecked():
             expr = sympy.simplify(expr)
         self.w.conditions.append(expr)
-        self.ListWidget_conditions.addItem(f'{expr} = 0')
 
     def add_point(self):
         """添加点"""
@@ -123,7 +122,8 @@ class InterfaceAdd(QWidget, Ui_Add):
             l2 = read.to_line_object(w.wid.LineEdit_2.text(), self.w.points)
             # 平行斜率相等
             expr = l1.k - l2.k
-            self.add_condition_and_show(expr)
+            self.add_condition(expr)
+            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} // {w.wid.LineEdit_2.text()}')
 
     def add_vertical(self):
         """垂直"""
@@ -134,7 +134,8 @@ class InterfaceAdd(QWidget, Ui_Add):
             l2 = read.to_line_object(w.wid.LineEdit_2.text(), self.w.points)
             # 垂直则斜率积为-1
             expr = l1.k * l2.k + 1
-            self.add_condition_and_show(expr)
+            self.add_condition(expr)
+            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} ⊥ {w.wid.LineEdit_2.text()}')
 
     def add_eq(self):
         """等式"""
@@ -145,7 +146,8 @@ class InterfaceAdd(QWidget, Ui_Add):
             right = read.to_expr(w.wid.LineEdit_2.text(), self.w.points)
             # 两边相等
             expr = left - right
-            self.add_condition_and_show(expr)
+            self.add_condition(expr)
+            self.ListWidget_conditions.addItem(f'{w.wid.LineEdit_1.text()} = {w.wid.LineEdit_2.text()}')
 
 
 def get_widget(Ui):
