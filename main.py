@@ -1,11 +1,11 @@
 import sys
 
 from PyQt6.QtWidgets import QApplication
-from qfluentwidgets import FluentWindow, FluentTranslator, FluentIcon, NavigationItemPosition
+from qfluentwidgets import FluentWindow, FluentTranslator, FluentIcon, NavigationItemPosition, MessageBox
 
 import interfaces
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 
 class Window(FluentWindow):
@@ -28,6 +28,14 @@ class Window(FluentWindow):
         self.addSubInterface(self.ui_solve, FluentIcon.EDIT, '求解')
         self.ui_help = interfaces.InterfaceHelp(self)
         self.addSubInterface(self.ui_help, FluentIcon.HELP, '帮助与关于', NavigationItemPosition.BOTTOM)
+
+        # 报错不崩溃
+        sys.excepthook = self.error
+
+    def error(self, etype: type, value: Exception, tb):
+        """处理报错的函数"""
+        w = MessageBox('错误', f'{etype.__name__}: {value}', self)
+        w.exec()
 
 
 app = QApplication(sys.argv)
