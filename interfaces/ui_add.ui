@@ -41,7 +41,7 @@
       <widget class="CardWidget" name="CardWidget">
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="ListWidget" name="ListWidget_points"/>
+         <widget class="TableWidget" name="ListWidget_points"/>
         </item>
        </layout>
       </widget>
@@ -116,7 +116,7 @@
       <widget class="CardWidget" name="CardWidget_2">
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="ListWidget" name="ListWidget_conditions"/>
+         <widget class="TableWidget" name="ListWidget_conditions"/>
         </item>
        </layout>
       </widget>
@@ -163,8 +163,8 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ListWidget</class>
-   <extends>QListWidget</extends>
+   <class>TableWidget</class>
+   <extends>QTableWidget</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
