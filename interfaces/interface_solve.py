@@ -2,7 +2,9 @@ import time
 
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QWidget
+from PyQt6.QtGui import QPixmap
 import sympy
+import matplotlib.pyplot as plt
 
 from .ui_solve import Ui_Solve
 import read
@@ -43,8 +45,7 @@ class InterfaceSolve(QWidget, Ui_Solve):
         self.thread_solve.started.connect(self.IndeterminateProgressBar.start)  # 开启进度条
         # 完成后
         self.thread_solve.finished.connect(lambda: self.set_enabled(True))  # 启用组件
-        self.thread_solve.finished.connect(
-            lambda: self.LargeTitleLabel_result.setText(str(self.thread_solve.result)))  # 显示结果
+        self.thread_solve.finished.connect(self.show_result)  # 显示结果
         self.thread_solve.finished.connect(self.thread_timer.turn_off)  # 关闭计时器
         self.thread_solve.finished.connect(lambda: self.SubtitleLabel_state.setText('所有可能的结果如下'))  # 显示状态
         self.thread_solve.finished.connect(self.IndeterminateProgressBar.stop)  # 停止进度条
@@ -71,6 +72,23 @@ class InterfaceSolve(QWidget, Ui_Solve):
         # 开子线程求解
         self.thread_solve.a = a
         self.thread_solve.start()
+        
+    def show_result(self):
+        formula = ''
+        for i in self.thread_solve.result:
+            formula = formula + sympy.latex(i) + ','
+        formula = formula.rstrip(',')
+        
+        plt.rc('mathtext', fontset='cm')
+        fig = plt.figure(figsize=(0.01, 0.01))
+        fig.text(10, 10, r'${}$'.format(formula), fontsize=12)
+
+        fig.savefig('temp.png', dpi=300, transparent=True, format='png',
+                    bbox_inches='tight', pad_inches=0.1)
+        plt.close(fig)
+        
+        self.im = QPixmap('./temp.png')
+        self.LargeTitleLabel_result.setPixmap(self.im)
 
     def _replace(self):
         s = self.LineEdit_want.text()
