@@ -2,11 +2,10 @@ import time
 
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QWidget
-from PyQt6.QtGui import QPixmap
 import sympy
-import matplotlib.pyplot as plt
 
 from .ui_solve import Ui_Solve
+from .utils import tex2img
 import read
 
 if __name__ == '__main__':
@@ -78,17 +77,7 @@ class InterfaceSolve(QWidget, Ui_Solve):
         for i in self.thread_solve.result:
             formula = formula + sympy.latex(i) + ','
         formula = formula.rstrip(',')
-        
-        plt.rc('mathtext', fontset='cm')
-        fig = plt.figure(figsize=(0.01, 0.01))
-        fig.text(10, 10, r'${}$'.format(formula), fontsize=12)
-
-        fig.savefig('temp.png', dpi=300, transparent=True, format='png',
-                    bbox_inches='tight', pad_inches=0.1)
-        plt.close(fig)
-        
-        self.im = QPixmap('./temp.png')
-        self.LargeTitleLabel_result.setPixmap(self.im)
+        self.LargeTitleLabel_result.setPixmap(tex2img(formula))
 
     def _replace(self):
         s = self.LineEdit_want.text()
