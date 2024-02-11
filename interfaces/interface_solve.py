@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QWidget
 import sympy
 
 from .ui_solve import Ui_Solve
+from .utils import tex2img
 import read
 
 if __name__ == '__main__':
@@ -43,8 +44,7 @@ class InterfaceSolve(QWidget, Ui_Solve):
         self.thread_solve.started.connect(self.IndeterminateProgressBar.start)  # 开启进度条
         # 完成后
         self.thread_solve.finished.connect(lambda: self.set_enabled(True))  # 启用组件
-        self.thread_solve.finished.connect(
-            lambda: self.LargeTitleLabel_result.setText(str(self.thread_solve.result)))  # 显示结果
+        self.thread_solve.finished.connect(self.show_result)  # 显示结果
         self.thread_solve.finished.connect(self.thread_timer.turn_off)  # 关闭计时器
         self.thread_solve.finished.connect(lambda: self.SubtitleLabel_state.setText('所有可能的结果如下'))  # 显示状态
         self.thread_solve.finished.connect(self.IndeterminateProgressBar.stop)  # 停止进度条
@@ -71,6 +71,13 @@ class InterfaceSolve(QWidget, Ui_Solve):
         # 开子线程求解
         self.thread_solve.a = a
         self.thread_solve.start()
+        
+    def show_result(self):
+        formula = ''
+        for i in self.thread_solve.result:
+            formula = formula + sympy.latex(i) + ','
+        formula = formula.rstrip(',')
+        self.LargeTitleLabel_result.setPixmap(tex2img(formula))
 
     def _replace(self):
         s = self.LineEdit_want.text()

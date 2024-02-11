@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui_solve.ui'
+# Form implementation generated from reading ui file '.\interfaces\ui_solve.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -15,10 +15,6 @@ class Ui_Solve(object):
         Solve.resize(800, 600)
         self.gridLayout_4 = QtWidgets.QGridLayout(Solve)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.TitleLabel = TitleLabel(parent=Solve)
-        self.TitleLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.TitleLabel.setObjectName("TitleLabel")
-        self.gridLayout_4.addWidget(self.TitleLabel, 0, 0, 1, 1)
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
         self.SubtitleLabel = SubtitleLabel(parent=Solve)
@@ -40,6 +36,10 @@ class Ui_Solve(object):
         self.IndeterminateProgressBar.setObjectName("IndeterminateProgressBar")
         self.gridLayout_2.addWidget(self.IndeterminateProgressBar, 0, 1, 1, 1)
         self.gridLayout_4.addLayout(self.gridLayout_2, 2, 0, 1, 1)
+        self.TitleLabel = TitleLabel(parent=Solve)
+        self.TitleLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.TitleLabel.setObjectName("TitleLabel")
+        self.gridLayout_4.addWidget(self.TitleLabel, 0, 0, 1, 1)
         self.SubtitleLabel_state = SubtitleLabel(parent=Solve)
         self.SubtitleLabel_state.setObjectName("SubtitleLabel_state")
         self.gridLayout_4.addWidget(self.SubtitleLabel_state, 3, 0, 1, 1)
@@ -47,7 +47,7 @@ class Ui_Solve(object):
         self.SmoothScrollArea.setWidgetResizable(True)
         self.SmoothScrollArea.setObjectName("SmoothScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 780, 71))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 780, 428))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -59,8 +59,6 @@ class Ui_Solve(object):
         self.gridLayout_3.addWidget(self.LargeTitleLabel_result, 0, 0, 1, 1)
         self.SmoothScrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout_4.addWidget(self.SmoothScrollArea, 4, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 370, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout_4.addItem(spacerItem, 5, 0, 1, 1)
 
         self.retranslateUi(Solve)
         QtCore.QMetaObject.connectSlotsByName(Solve)
@@ -68,9 +66,9 @@ class Ui_Solve(object):
     def retranslateUi(self, Solve):
         _translate = QtCore.QCoreApplication.translate
         Solve.setWindowTitle(_translate("Solve", "Form"))
-        self.TitleLabel.setText(_translate("Solve", "求解"))
         self.SubtitleLabel.setText(_translate("Solve", "求"))
         self.PrimaryPushButton_solve.setText(_translate("Solve", "开始计算"))
         self.SubtitleLabel_timer.setText(_translate("Solve", "用时 00:00:00.00"))
+        self.TitleLabel.setText(_translate("Solve", "求解"))
         self.SubtitleLabel_state.setText(_translate("Solve", "未计算"))
 from qfluentwidgets import IndeterminateProgressBar, LargeTitleLabel, LineEdit, PrimaryPushButton, SmoothScrollArea, SubtitleLabel, TitleLabel

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui_add.ui'
+# Form implementation generated from reading ui file '.\interfaces\ui_add.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -30,8 +30,10 @@ class Ui_Add(object):
         self.CardWidget.setObjectName("CardWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.CardWidget)
         self.gridLayout.setObjectName("gridLayout")
-        self.ListWidget_points = ListWidget(parent=self.CardWidget)
+        self.ListWidget_points = TableWidget(parent=self.CardWidget)
         self.ListWidget_points.setObjectName("ListWidget_points")
+        self.ListWidget_points.setColumnCount(0)
+        self.ListWidget_points.setRowCount(0)
         self.gridLayout.addWidget(self.ListWidget_points, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.CardWidget, 5, 0, 1, 1)
         self.TitleLabel = TitleLabel(parent=Add)
@@ -64,8 +66,10 @@ class Ui_Add(object):
         self.CardWidget_2.setObjectName("CardWidget_2")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.CardWidget_2)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.ListWidget_conditions = ListWidget(parent=self.CardWidget_2)
+        self.ListWidget_conditions = TableWidget(parent=self.CardWidget_2)
         self.ListWidget_conditions.setObjectName("ListWidget_conditions")
+        self.ListWidget_conditions.setColumnCount(0)
+        self.ListWidget_conditions.setRowCount(0)
         self.gridLayout_3.addWidget(self.ListWidget_conditions, 0, 0, 1, 1)
         self.gridLayout_4.addWidget(self.CardWidget_2, 5, 0, 1, 3)
         self.CheckBox_pre_simplify = CheckBox(parent=Add)
@@ -91,4 +95,4 @@ class Ui_Add(object):
         self.PushButton_eq.setText(_translate("Add", "等式"))
         self.SubtitleLabel_2.setText(_translate("Add", "已有的条件（方程）："))
         self.CheckBox_pre_simplify.setText(_translate("Add", "预化简"))
-from qfluentwidgets import CardWidget, CheckBox, ListWidget, PushButton, SubtitleLabel, TitleLabel
+from qfluentwidgets import CardWidget, CheckBox, PushButton, SubtitleLabel, TableWidget, TitleLabel

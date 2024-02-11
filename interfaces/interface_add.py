@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QTableWidgetItem, QAbstractItemView, QHeaderView
 from qfluentwidgets import MessageBoxBase
 from sympy import sqrt, Eq
 
@@ -26,6 +26,16 @@ class InterfaceAdd(QWidget, Ui_Add):
 
         # 连接信号与槽
         self.connect()
+        
+        self.point_cnt = 0
+        self.condition_cnt = 0
+        
+    def init_tableview(self, tableview):
+        tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        tableview.setBorderVisible(True)
+        tableview.setBorderRadius(8)
+        tableview.setWordWrap(False)
 
     def connect(self):
         """连接信号与槽"""
@@ -33,10 +43,16 @@ class InterfaceAdd(QWidget, Ui_Add):
         self.PushButton_point.clicked.connect(self.add_point)
         self.PushButton_intersection.clicked.connect(self.add_intersection)
         self.PushButton_point_on_line.clicked.connect(self.add_point_on_line)
+        self.ListWidget_points.setColumnCount(3)
+        self.ListWidget_points.setHorizontalHeaderLabels(['点', '横坐标 x', '纵坐标 y'])
+        self.init_tableview(self.ListWidget_points)
         # 条件
         self.PushButton_parallel.clicked.connect(self.add_parallel)
         self.PushButton_vertical.clicked.connect(self.add_vertical)
         self.PushButton_eq.clicked.connect(self.add_eq)
+        self.ListWidget_conditions.setColumnCount(2)
+        self.ListWidget_conditions.setHorizontalHeaderLabels(['条件', '方程'])
+        self.init_tableview(self.ListWidget_conditions)
 
     def add_point_and_show(self, point: Point):
         """
@@ -50,7 +66,12 @@ class InterfaceAdd(QWidget, Ui_Add):
             point.y = sympy.simplify(point.y)
         # 添加点
         self.w.points[point.name] = point
-        self.ListWidget_points.addItem(str(point))
+        self.point_cnt += 1
+        self.ListWidget_points.setRowCount(self.point_cnt)
+        self.ListWidget_points.setItem(self.point_cnt - 1, 0, QTableWidgetItem(point.name))
+        self.ListWidget_points.setItem(self.point_cnt - 1, 1, QTableWidgetItem(str(point.x)))
+        self.ListWidget_points.setItem(self.point_cnt - 1, 2, QTableWidgetItem(str(point.y)))
+        self.ListWidget_points.resizeColumnsToContents()
         # 添加符号
         if isinstance(point.x, sympy.Symbol):
             self.w.symbols.add(point.x)
@@ -68,8 +89,11 @@ class InterfaceAdd(QWidget, Ui_Add):
         if self.CheckBox_pre_simplify.isChecked():
             eq = sympy.simplify(eq)
         self.w.conditions.append(eq)
-        self.ListWidget_conditions.addItem(f'{text} => {eq.lhs} = {eq.rhs}')
-        print(sympy.latex(eq))
+        self.condition_cnt += 1
+        self.ListWidget_conditions.setRowCount(self.condition_cnt)
+        self.ListWidget_conditions.setItem(self.condition_cnt - 1, 0, QTableWidgetItem(text))
+        self.ListWidget_conditions.setItem(self.condition_cnt - 1, 1, QTableWidgetItem(f'{eq.lhs} = {eq.rhs}'))
+        self.ListWidget_conditions.resizeColumnsToContents()
 
     def add_point(self):
         """添加点"""
