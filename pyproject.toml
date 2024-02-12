@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "geometrycalculator"
+version = "1.0.1"
+description = "几何计算器"
+authors = ["zhdbk"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sympy = "^1.12"
+pyqt6 = "^6.6.1"
+pyqt6-fluent-widgets = "^1.4.7"
+matplotlib = "^3.8.2"
+
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "default"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

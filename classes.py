@@ -120,7 +120,7 @@ class Angle:
         # |AC|=[(X3-X1)^2+(Y3-Y1)^2]^0.5
         # ∠A = Arccos {[(X2-X1)(X3-X1)+(Y2-Y1)(Y3-Y1)]/|AB||AC|}
         return sympy.acos(((self.p1.x - self.vertex.x) * (self.p2.x - self.vertex.x) + (self.p1.y - self.vertex.y) * (
-                self.p2.y - self.vertex.y)) / (distance(self.p1, self.vertex) * distance(self.p2, self.vertex)))
+            self.p2.y - self.vertex.y)) / (distance(self.p1, self.vertex) * distance(self.p2, self.vertex)))
 
 
 if __name__ == '__main__':

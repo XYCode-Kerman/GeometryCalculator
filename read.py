@@ -49,7 +49,7 @@ def to_expr(s, points: dict):
     return eval(s)
 
 
-if __name__ == '__main__':
-    print(to_expr('1/3', {}))
-    print(to_expr('tan∠AOB', {'A': Point('A', 5, 5), 'O': Point('O', 0, 0), 'B': Point('B', 5, 0)}))
-    print(to_expr('sqrt(2)', {}))
+# if __name__ == '__main__':
+#     print(to_expr('1/3', {}))
+#     print(to_expr('tan∠AOB', {'A': Point('A', 5, 5), 'O': Point('O', 0, 0), 'B': Point('B', 5, 0)}))
+#     print(to_expr('sqrt(2)', {}))
